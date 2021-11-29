@@ -1,11 +1,11 @@
-const { Router } = require('express');
-const { post } = require('./app');
-const orderController=require('./controllers/orderController')
+const { Router } = require('express');;
+const orderController=require('./controllers/orderController');
+const getOrdersController=require('./controllers/getOrdersController');
 
 const routes=new Router();
 
 routes
-.get('/',(req,res)=>res.redirect('/orders'))
+.get('/orders',getOrdersController.index)
 .post('/orders',orderController.createOrder)
 
 module.exports=routes;

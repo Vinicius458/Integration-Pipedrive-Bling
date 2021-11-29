@@ -30,8 +30,6 @@ class App {
     this.app.use((error, req, res, next) => {
       if (!error) next();
 
-      console.log(error);
-
       return res.status(error.status || 500).json({
         status: error.status,
         message: error.message,

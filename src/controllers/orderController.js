@@ -1,50 +1,43 @@
-const dealClientService=require('../services/dealClientService');
-const xmlConvert=require('../helpers/xmlConvertOrder')
-const orderClientService=require('../services/orderClientService')
+const dealClientService = require("../services/dealClientService");
+const orderClientService = require("../services/orderClientService");
+const OrderService = require("../services/OrderService.js");
+const objectOrder = require("../helpers/objectOrder");
 
-class orderController{
+class orderController {
+  async createOrder(req, res) {
+    try {
 
-async createOrder(req,res){
-try{
-   const wonDeals=await dealClientService.getWonDeals();
+      const wonDeals = await dealClientService.getWonDeals();
 
-   if(!wonDeals)
-   return res.status(404).json({message:'No Deals'})
+      if (!wonDeals)
+        return res.status(404).json({ status: "Error", message: "No Deals" });
 
-   // return res.status(200).json(wonDeals)
+      var orderList = await Promise.all(
+        wonDeals.map(async (deal) => {
+          const orderCreated = await orderClientService.createOrder(deal);
 
+          if (orderCreated[0].erro) {
+            return { orderStatus: "disapproved", order: orderCreated[0].erro };
+          }
 
-   var orderList=await wonDeals.map(deal=>{
-      // console.log(deal)
-      const Deal={
-      id_deal:deal.id,
-     customer_name:deal.person_id.name,
-     org_name:deal.org_id.name,
-     deal_title:deal.title,
-     value:deal.value,
-     currency:deal.currency,
-     date:deal.update_time,
-      }
+          const { idPedido, numero } = orderCreated[0].pedido;
+          const order = await objectOrder.create(deal, idPedido, numero);
 
-      orderClientService.createOrder(deal);
-      // const list= xmlConvert.createXmlOrder(deal);
+          var orderSaved = await OrderService.saveOrder(order);
+          if (orderSaved)
+            return { orderStatus: "approved", order: orderCreated[0].pedido };
 
-     
+          throw new Error("Error saving order to database");
+        })
+      );
 
-       
-   })
-  
-// console.log(orderPromise)
-   // return res.send('gerando')
-   return res.status(200).json(wonDeals)
-}catch(err){
-     return res.send(err)
-}
+      return res.status(200).json({ status: "success", orders: orderList });
+
+    } catch (err) {
+      return res.status(500).json({ status: "Error", message: err.message });
+    }
+  }
 
 }
 
-}
-
-module.exports=new orderController();
-
-
+module.exports = new orderController();

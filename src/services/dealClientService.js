@@ -12,7 +12,6 @@ class dealClientService {
 
            return data.data;
     } catch (err) {
-        console.log(error);
         return
     }
   }

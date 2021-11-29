@@ -1,5 +1,4 @@
 const xml = require("js2xmlparser");
-const moment=require('moment') 
 
 class xmlConvertOrder{
 
@@ -16,7 +15,7 @@ class xmlConvertOrder{
                     codigo:deal.id,
                     descricao:deal.title,
                     un:'un',
-                    qtde:deal.products_count,
+                    qtde:1,
                     vlr_unit:deal.value,
                 }
             },
@@ -25,8 +24,8 @@ class xmlConvertOrder{
 
         try{
           var orders=await xml.parse('pedido',obj);
-          console.log(orders)
-            return orders
+
+           return orders
         }catch(err){
            throw err
         }
