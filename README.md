@@ -25,7 +25,7 @@ Inicialmente é necessário configurar as variáveis de ambiente no arquivo ***.
 * **POST**: /orders
 > Realiza a integração entre os sistemas Pipedrive e Bling
 
-## O QUE A API É CAPAZ DE REALIZAR?
+## O QUE A API É CAPAZ DE FAZER?
 1. Realiza a busca de negócios ganhos na plataforma Pipedrive e registra um pedido de venda na plataforma Bling
 2. Não permite o registro do mesmo negócio na plataforma Bling
 3. Realiza a persistência de dados das ordens no banco MongoDB
