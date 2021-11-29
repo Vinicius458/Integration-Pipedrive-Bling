@@ -4,7 +4,7 @@
   "description": "APIs RestFul integration between pipedrive and bling",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/server.js"
+    "start": "nodemon src/server.js"
   },
   "author": "Vinicius Domingos de Padua",
   "license": "ISC",
